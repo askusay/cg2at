@@ -506,8 +506,8 @@ def run_nvt(input_file):
             ' -o NVT/merged_cg2at_de_novo_nvt'+
             ' -maxwarn '+str(2), 'NVT/merged_cg2at_de_novo_nvt.tpr'])   
     os.chdir(g_var.merged_directory+'NVT')
-    # removed flag -nt '+str(g_var.args.ncpus)+'
-    gromacs([g_var.args.gmx+' mdrun -v -pin on -deffnm merged_cg2at_de_novo_nvt'+
+    # removed flag -nt '+str(g_var.args.ncpus)+' #AK added -ntmpi 1
+    gromacs([g_var.args.gmx+' mdrun -ntmpi 1 -v -pin on -deffnm merged_cg2at_de_novo_nvt'+
             ' -c merged_cg2at_de_novo_nvt.pdb -cpo merged_cg2at_de_novo_nvt.cpt'
             , 'merged_cg2at_de_novo_nvt.pdb'])  
     gen.file_copy_and_check('merged_cg2at_de_novo_nvt.pdb', g_var.final_dir+'final_cg2at_de_novo.pdb')    
