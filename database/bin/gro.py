@@ -217,8 +217,8 @@ def minimise_protein_chain(chain, input, res_type):
                 '-maxwarn 1 ', 'MIN/'+res_type+'_'+input+str(chain)+'.tpr'])
 #### minimises chain
     os.chdir('MIN')
-    # removed flag -nt 1
-    gromacs([g_var.args.gmx+' mdrun -v -deffnm '+res_type+'_'+input+str(chain)+' -c '+res_type+'_'+input+str(chain)+'.pdb', res_type+'_'+input+str(chain)+'.pdb'])
+    # removed flag -nt 1 #AK added -ntmpi 1
+    gromacs([g_var.args.gmx+' mdrun -ntmpi 1 -v -deffnm '+res_type+'_'+input+str(chain)+' -c '+res_type+'_'+input+str(chain)+'.pdb', res_type+'_'+input+str(chain)+'.pdb'])
     os.chdir('..')  
 
 
@@ -342,8 +342,8 @@ def minimise_merged(residue_type, input_file):
             '-o '+g_var.working_dir+residue_type+'/MIN/'+residue_type+'_merged_min -maxwarn 1', g_var.working_dir+residue_type+'/MIN/'+residue_type+'_merged_min.tpr'])
 #### change to min directory and minimise
     os.chdir('MIN') 
-    # removed flag -nt '+str(g_var.args.ncpus)+'
-    complete, success = gromacs([g_var.args.gmx+' mdrun -v -pin on -deffnm '+residue_type+'_merged_min -c ../'+residue_type+'_merged.pdb', '../'+residue_type+'_merged.pdb'])
+    # removed flag -nt '+str(g_var.args.ncpus)+' #AK added -ntmpi 1
+    complete, success = gromacs([g_var.args.gmx+' mdrun -v -ntmpi 1 -pin on -deffnm '+residue_type+'_merged_min -c ../'+residue_type+'_merged.pdb', '../'+residue_type+'_merged.pdb'])
     os.chdir(g_var.working_dir)
     return success
 
@@ -452,8 +452,8 @@ def minimise_merged_pdbs(protein):
             '-maxwarn 1', 'MIN/merged_cg2at'+protein+'_minimised.tpr'])
     os.chdir('MIN')
 #### runs minimises final systems
-# removed flag -nt '+str(g_var.args.ncpus)+'
-    gromacs([g_var.args.gmx+' mdrun -v -pin on -deffnm merged_cg2at'+protein+'_minimised -c merged_cg2at'+protein+'_minimised.pdb', 'merged_cg2at'+protein+'_minimised.pdb'])
+# removed flag -nt '+str(g_var.args.ncpus)+' #AK added -ntmpi 1
+    gromacs([g_var.args.gmx+' mdrun -v -ntmpi 1 -pin on -deffnm merged_cg2at'+protein+'_minimised -c merged_cg2at'+protein+'_minimised.pdb', 'merged_cg2at'+protein+'_minimised.pdb'])
 
    
 def write_steered_mdp(loc, posres, time, timestep):
@@ -479,8 +479,8 @@ def steer_to_aligned(protein_type, fc, input_file ):
             ' -o STEER/merged_cg2at_'+protein_type+'_steer_'+fc+' '+
             ' -maxwarn '+str(2), 'STEER/merged_cg2at_'+protein_type+'_steer_'+fc+'.tpr'])  
     os.chdir('STEER')
-    # removed flag -nt '+str(g_var.args.ncpus)+'
-    complete, equil = gromacs([g_var.args.gmx+' mdrun -v -pin on -deffnm merged_cg2at_'+protein_type+'_steer_'+fc+
+    # removed flag -nt '+str(g_var.args.ncpus)+' #AK added -ntmpi 1
+    complete, equil = gromacs([g_var.args.gmx+' mdrun -v -ntmpi 1 -pin on -deffnm merged_cg2at_'+protein_type+'_steer_'+fc+
                                  ' -c merged_cg2at_'+protein_type+'_steer_'+fc+'.pdb -cpo merged_cg2at_'+protein_type+'_steer_'+fc+'.cpt'
                                  ,'merged_cg2at_'+protein_type+'_steer_'+fc+'.pdb'])
     print('{:<100}'.format(''), end='\r')
